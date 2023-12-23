@@ -28,7 +28,7 @@ public class Security {
             .build();
     }
 
-    @Bean
+    @Autowired
     public void configureGlobal(AuthenticationManagerBuilder builder) throws Exception {
         builder.userDetailsService(userService);
     }

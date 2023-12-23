@@ -9,10 +9,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class UserPublicInfoDTO {
+public class UserCreatedInfoDTO {
     
     private String username;
     private String email;
+    private String password;
     private LocalDateTime createdAt;
-    private LocalDateTime lastModifiedAt;
 }

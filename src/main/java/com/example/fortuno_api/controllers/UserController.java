@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,6 +12,8 @@ import com.example.fortuno_api.dtos.UserPublicInfoDTO;
 import com.example.fortuno_api.models.User;
 import com.example.fortuno_api.services.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @RestController
 @RequestMapping("/users")
@@ -28,6 +31,7 @@ public class UserController {
             for(User user : usersList) {
                 UserPublicInfoDTO userInfo = new UserPublicInfoDTO(
                     user.getUsername(),
+                    user.getEmail(),
                     user.getCreatedAt(),
                     user.getLastModifiedAt()
                 );
@@ -35,5 +39,10 @@ public class UserController {
             }
         }
         return usersPublicInfo;
+    }
+
+    @PostMapping
+    public ResponseEntity<Object> save(@ModelAttribute User user) {
+        return ResponseEntity.ok().body(userService.create(user));
     }
 }

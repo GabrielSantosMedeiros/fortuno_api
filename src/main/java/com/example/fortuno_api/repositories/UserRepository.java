@@ -11,4 +11,6 @@ import com.example.fortuno_api.models.User;
 public interface UserRepository extends JpaRepository<User, Long> {
     
     UserDetails findByUsername(String username);
+
+    boolean existsByUsername(String username);
 }

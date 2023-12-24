@@ -10,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.fortuno_api.dtos.UserCreatedInfoDTO;
+import com.example.fortuno_api.dtos.UserPublicInfoDTO;
 import com.example.fortuno_api.models.User;
 import com.example.fortuno_api.repositories.UserRepository;
 
@@ -36,9 +37,23 @@ public class UserService implements UserDetailsService {
         UserCreatedInfoDTO jsonInfo = new UserCreatedInfoDTO(
             user.getUsername(), 
             user.getEmail(), 
-            user.getPassword(),
             user.getCreatedAt()
         );
         return jsonInfo;
+    }
+
+    public UserPublicInfoDTO modifyUsername(String actualUsername, String newUsername) throws Exception {
+        User user = (User) loadUserByUsername(actualUsername);
+        if(userRepository.existsByUsername(newUsername)) throw new Exception("New username is already in use, please choose other.");
+        user.setUsername(newUsername);
+        userRepository.save(user);
+        
+        UserPublicInfoDTO userJson = new UserPublicInfoDTO(
+            user.getUsername(), 
+            user.getEmail(), 
+            user.getCreatedAt(), 
+            user.getLastModifiedAt()
+        );
+        return userJson;
     }
 }

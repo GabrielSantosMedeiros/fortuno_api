@@ -49,15 +49,6 @@ public class UserController {
 
     @PutMapping("/{username}")
     public ResponseEntity<Object> modify(@PathVariable("username") String username, @ModelAttribute User newUserInfo) throws Exception {
-        User user = (User) userService.loadUserByUsername(username);
-        if(user==null) throw new Exception("user not exists.");
-        if(newUserInfo.getUsername()!=null) userService.modifyUsername(username, newUserInfo.getUsername());
-        UserPublicInfoDTO modifedUserJson = new UserPublicInfoDTO(
-            user.getUsername(), 
-            user.getEmail(), 
-            user.getCreatedAt(), 
-            user.getLastModifiedAt()
-        );
-        return ResponseEntity.ok().body(modifedUserJson);
+        return ResponseEntity.ok().body(userService.modifyUser(username, newUserInfo));
     }
 }

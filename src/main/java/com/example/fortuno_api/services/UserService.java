@@ -32,28 +32,38 @@ public class UserService implements UserDetailsService {
     public UserCreatedInfoDTO create(User user) {
         String passwordEncoded = new BCryptPasswordEncoder().encode(user.getPassword());
         user.setPassword(passwordEncoded);
-
         userRepository.save(user);
-        UserCreatedInfoDTO jsonInfo = new UserCreatedInfoDTO(
+
+        return new UserCreatedInfoDTO(
             user.getUsername(), 
             user.getEmail(), 
             user.getCreatedAt()
         );
-        return jsonInfo;
     }
 
-    public UserPublicInfoDTO modifyUsername(String actualUsername, String newUsername) throws Exception {
-        User user = (User) loadUserByUsername(actualUsername);
-        if(userRepository.existsByUsername(newUsername)) throw new Exception("New username is already in use, please choose other.");
-        user.setUsername(newUsername);
+    public UserPublicInfoDTO modifyUser(String username, User newInfoUser) throws Exception {
+        User user = (User) loadUserByUsername(username);
+        if(user==null) throw new Exception("User not found.");
+
+        if(newInfoUser.getUsername()!=null && !newInfoUser.getUsername().isEmpty()) {
+            if(username.equals(newInfoUser.getUsername())) throw new Exception("New username should be different.");
+            if(userRepository.existsByUsername(newInfoUser.getUsername())) throw new Exception("It's username is already in use.");
+
+            user.setUsername(newInfoUser.getUsername());
+        }
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        if(newInfoUser.getPassword()!=null && !newInfoUser.getUsername().isEmpty()) {
+            if(encoder.matches(newInfoUser.getPassword(), user.getPassword())) throw new Exception("New password should be different.");
+            user.setPassword(encoder.encode(newInfoUser.getPassword()));
+        }
+
         userRepository.save(user);
-        
-        UserPublicInfoDTO userJson = new UserPublicInfoDTO(
+        return new UserPublicInfoDTO(
             user.getUsername(), 
             user.getEmail(), 
             user.getCreatedAt(), 
             user.getLastModifiedAt()
         );
-        return userJson;
     }
 }

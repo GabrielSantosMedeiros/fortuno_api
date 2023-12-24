@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.fortuno_api.dtos.UserPublicInfoDTO;
 import com.example.fortuno_api.models.User;
 import com.example.fortuno_api.services.UserService;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,5 +52,10 @@ public class UserController {
     @PutMapping("/{username}")
     public ResponseEntity<Object> modify(@PathVariable("username") String username, @ModelAttribute User newUserInfo) throws Exception {
         return ResponseEntity.ok().body(userService.modifyUser(username, newUserInfo));
+    }
+
+    @DeleteMapping("/{username}")
+    public ResponseEntity<Object> delete(@PathVariable("username") String username) throws Exception {
+        return ResponseEntity.ok().body(userService.delete(username));
     }
 }

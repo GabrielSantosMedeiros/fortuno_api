@@ -66,4 +66,11 @@ public class UserService implements UserDetailsService {
             user.getLastModifiedAt()
         );
     }
+
+    public String delete(String username) throws Exception {
+        User user = (User) loadUserByUsername(username);
+        if(user==null) throw new Exception("User not found!");
+        userRepository.delete(user);
+        return username + " has been deleted!";
+    }
 }

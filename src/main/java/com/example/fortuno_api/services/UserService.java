@@ -1,5 +1,6 @@
 package com.example.fortuno_api.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,22 @@ public class UserService implements UserDetailsService {
         return userRepository.findByUsername(username);
     }
 
-    public List<User> loadAllUsers() {
-        return userRepository.findAll();
+    public List<UserPublicInfoDTO> loadAllUsers() {
+        List<User> usersList = userRepository.findAll();
+        List<UserPublicInfoDTO> usersPublicInfo = new ArrayList<>();
+
+        if(usersList!=null) {
+            for(User user : usersList) {
+                UserPublicInfoDTO userInfo = new UserPublicInfoDTO(
+                    user.getUsername(),
+                    user.getEmail(),
+                    user.getCreatedAt(),
+                    user.getLastModifiedAt()
+                );
+                usersPublicInfo.add(userInfo);
+            }
+        }
+        return usersPublicInfo;
     }
     
     public UserCreatedInfoDTO create(User user) {
@@ -38,6 +53,17 @@ public class UserService implements UserDetailsService {
             user.getUsername(), 
             user.getEmail(), 
             user.getCreatedAt()
+        );
+    }
+
+    public UserPublicInfoDTO getUser(String username) throws Exception {
+        User user = (User) loadUserByUsername(username);
+        if(user==null) throw new Exception("User not found!");
+        return new UserPublicInfoDTO(
+            user.getUsername(), 
+            user.getEmail(), 
+            user.getCreatedAt(), 
+            user.getLastModifiedAt()
         );
     }
 

@@ -15,11 +15,14 @@ public class WalletService {
 
     public WalletCreatedInfoDTO create(Wallet wallet) {
         walletRepository.save(wallet);
+        
         return new WalletCreatedInfoDTO(
             wallet.getBalance(), 
             wallet.getName(), 
             wallet.getDescription(), 
-            wallet.getOwner().getUsername()
+            wallet.getOwner().getUsername(), 
+            wallet.getCreatedAt(), 
+            wallet.getLastModifiedAt()
         );
     }
 }

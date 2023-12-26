@@ -1,4 +1,4 @@
-package com.example.fortuno_api.dtos;
+package com.example.fortuno_api.dtos.user;
 
 import java.time.LocalDateTime;
 

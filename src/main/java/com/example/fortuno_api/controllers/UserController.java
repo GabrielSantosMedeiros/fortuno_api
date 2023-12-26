@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.fortuno_api.dtos.LoginAuthenticationDTO;
-import com.example.fortuno_api.dtos.UserPublicInfoDTO;
+import com.example.fortuno_api.dtos.user.LoginAuthenticationDTO;
+import com.example.fortuno_api.dtos.user.UserPublicInfoDTO;
 import com.example.fortuno_api.models.User;
 import com.example.fortuno_api.security.TokenJWTService;
 import com.example.fortuno_api.services.UserService;

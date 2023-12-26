@@ -10,8 +10,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.example.fortuno_api.dtos.UserCreatedInfoDTO;
-import com.example.fortuno_api.dtos.UserPublicInfoDTO;
+import com.example.fortuno_api.dtos.user.UserCreatedInfoDTO;
+import com.example.fortuno_api.dtos.user.UserPublicInfoDTO;
 import com.example.fortuno_api.models.User;
 import com.example.fortuno_api.repositories.UserRepository;
 

@@ -1,4 +1,4 @@
-package com.example.fortuno_api.dtos;
+package com.example.fortuno_api.dtos.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

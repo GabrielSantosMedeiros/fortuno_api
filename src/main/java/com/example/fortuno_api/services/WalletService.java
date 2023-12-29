@@ -18,8 +18,9 @@ public class WalletService {
     @Autowired
     WalletRepository walletRepository;
 
-    public WalletPublicInfo getWalletByNameAndOwner(String name, User user) {
-        Wallet wallet = walletRepository.findByNameAndOwner(name, user);
+    public WalletPublicInfo getWalletByNameAndOwner(String walletName, User user) throws Exception {
+        Wallet wallet = walletRepository.findByNameAndOwner(walletName, user);
+        if(wallet==null) throw new Exception("Wallet not found.");
         return new WalletPublicInfo(
             wallet.getBalance(),
             wallet.getName(),
@@ -54,5 +55,30 @@ public class WalletService {
             wallet.getCreatedAt(), 
             wallet.getLastModifiedAt()
         );
+    }
+
+    public WalletCreatedInfoDTO modify(String walletName, User owner, Wallet newWalletInfo) throws Exception {
+        Wallet wallet = walletRepository.findByNameAndOwner(walletName, owner);
+        if(wallet==null) throw new Exception("wallet not found.");
+        
+        if(!Double.toString(newWalletInfo.getBalance()).isEmpty()) wallet.setBalance(newWalletInfo.getBalance()); 
+        if(!newWalletInfo.getDescription().isEmpty()) wallet.setDescription(newWalletInfo.getDescription());
+        if(!newWalletInfo.getName().isEmpty()) wallet.setName(newWalletInfo.getName());
+
+        walletRepository.save(wallet);
+        return new WalletCreatedInfoDTO(
+            wallet.getBalance(), 
+            wallet.getName(), 
+            wallet.getDescription(), 
+            wallet.getOwner().getUsername(), 
+            wallet.getCreatedAt(), 
+            wallet.getLastModifiedAt()
+        );
+    }
+
+    public String delete(String walletName, User owner) {
+        Wallet wallet = walletRepository.findByNameAndOwner(walletName, owner);
+        if(wallet!=null) walletRepository.delete(wallet);
+        return "The wallet has been deleted.";
     }
 }

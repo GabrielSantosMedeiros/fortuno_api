@@ -55,7 +55,7 @@ public class User implements UserDetails {
     private List<Wallet> wallets;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
-    private List<Expense> expenses;
+    private List<Transaction> transactions;
 
     private boolean enable = true;
     private boolean accountNonExpired = true;

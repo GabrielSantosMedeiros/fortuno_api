@@ -25,7 +25,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Expense {
+public class Transaction {
     
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -35,6 +35,8 @@ public class Expense {
     @ManyToOne
     @JoinColumn(name = "owner", referencedColumnName = "id")
     private User owner;
+
+    private TransactionType type;
 
     @CreatedDate
     @Column(name = "created_date")

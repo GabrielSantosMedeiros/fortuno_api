@@ -9,6 +9,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,7 +23,7 @@ import lombok.Setter;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "expenses")
+@Table(name = "transactions")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -30,12 +32,13 @@ public class Transaction {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private double value;
+    private Double amount;
 
     @ManyToOne
     @JoinColumn(name = "owner", referencedColumnName = "id")
     private User owner;
 
+    @Enumerated(EnumType.STRING)
     private TransactionType type;
 
     @CreatedDate

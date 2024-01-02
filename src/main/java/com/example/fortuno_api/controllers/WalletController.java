@@ -49,12 +49,11 @@ public class WalletController {
         return ResponseEntity.ok().body(walletService.create(wallet));
     }
 
-    @PutMapping("/{username}/{wallet}")
-    public ResponseEntity<Object> modify(@PathVariable("username") String username, @PathVariable("wallet") String wallet, @ModelAttribute Wallet newWalletInfo) 
+    @PutMapping("/{wallet-name}")
+    public ResponseEntity<Object> modify(@PathVariable("wallet-name") String walletName, @ModelAttribute Wallet newWalletInfo) 
             throws Exception {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(!user.getUsername().equals(username)) return ResponseEntity.badRequest().body("user authenticated and owner should be the same.");
-        return ResponseEntity.ok().body(walletService.modify(wallet, user, newWalletInfo));
+        return ResponseEntity.ok().body(walletService.modify(walletName, user, newWalletInfo));
     }
 
     @DeleteMapping("/{username}/{wallet}")

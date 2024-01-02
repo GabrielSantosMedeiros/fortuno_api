@@ -61,9 +61,9 @@ public class WalletService {
         Wallet wallet = walletRepository.findByNameAndOwner(walletName, owner);
         if(wallet==null) throw new Exception("wallet not found.");
         
-        if(!Double.toString(newWalletInfo.getBalance()).isEmpty()) wallet.setBalance(newWalletInfo.getBalance()); 
-        if(!newWalletInfo.getDescription().isEmpty()) wallet.setDescription(newWalletInfo.getDescription());
+        if(newWalletInfo.getBalance()!=null) wallet.setBalance(newWalletInfo.getBalance());
         if(!newWalletInfo.getName().isEmpty()) wallet.setName(newWalletInfo.getName());
+        if(!newWalletInfo.getDescription().isEmpty()) wallet.setDescription(newWalletInfo.getDescription());
 
         walletRepository.save(wallet);
         return new WalletCreatedInfoDTO(

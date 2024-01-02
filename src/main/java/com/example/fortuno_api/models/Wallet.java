@@ -34,7 +34,7 @@ public class Wallet {
 
     private String description;
 
-    private double balance;
+    private Double balance;
 
     @ManyToOne
     @JoinColumn(name = "owner_id", referencedColumnName = "id")

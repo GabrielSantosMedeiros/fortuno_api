@@ -28,17 +28,16 @@ public class WalletController {
     @Autowired
     WalletService walletService;
 
-    @GetMapping("/{username}")
-    public ResponseEntity<Object> getAllByOwner(@PathVariable("username") String username) {
+    @GetMapping
+    public ResponseEntity<Object> getAllByOwner() {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return ResponseEntity.ok().body(walletService.getWalletsByOwner(user));
     }
 
-    @GetMapping("/{username}/{wallet}")
-    public WalletPublicInfo getWalletByNameAndOwner(@PathVariable("username") String username, @PathVariable("wallet") String wallet) throws Exception {
+    @GetMapping("/{wallet-name}")
+    public WalletPublicInfo getWalletByNameAndOwner(@PathVariable("wallet-name") String walletName) throws Exception {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(!user.getUsername().equals(username)) throw new Exception("access denied: owner and user should be the same.");
-        return walletService.getWalletByNameAndOwner(wallet, user);
+        return walletService.getWalletByNameAndOwner(walletName, user);
     }
 
     @PostMapping
@@ -56,10 +55,10 @@ public class WalletController {
         return ResponseEntity.ok().body(walletService.modify(walletName, user, newWalletInfo));
     }
 
-    @DeleteMapping("/{username}/{wallet}")
-    public ResponseEntity<Object> delete(@PathVariable("username") String username, @PathVariable("wallet") String wallet) {
+    @DeleteMapping("/{wallet-name}")
+    public ResponseEntity<Object> delete(@PathVariable("wallet-name") String walletName) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(user.getUsername().equals(username)) return ResponseEntity.badRequest().body("user and owner should be the same.");
-        return ResponseEntity.ok().body(walletService.delete(wallet, user));
+        return ResponseEntity.ok().body(walletService.delete(walletName, user));
     }
 }
+    

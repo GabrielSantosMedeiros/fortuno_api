@@ -3,6 +3,7 @@ package com.example.fortuno_api.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -69,12 +70,12 @@ public class UserController {
         return ResponseEntity.ok().body(userService.delete(username));
     }
 
-    @PostMapping("/auth/login")
+    @PostMapping(value = "/auth/login", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> login(@ModelAttribute LoginAuthenticationDTO data) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.getUsername(), data.getPassword());
         var auth = this.authenticationManager.authenticate(usernamePassword);
 
         var token = this.tokenService.generateToken((User) auth.getPrincipal());
-        return ResponseEntity.ok().body("Token: " + token.toString());
+        return ResponseEntity.ok().body(token.toString());
     }
 }

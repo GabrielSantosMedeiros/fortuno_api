@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.fortuno_api.dtos.wallet.WalletPublicInfo;
+import com.example.fortuno_api.dtos.wallet.WalletDTO;
 import com.example.fortuno_api.models.User;
 import com.example.fortuno_api.models.Wallet;
 import com.example.fortuno_api.services.UserService;
@@ -35,7 +35,7 @@ public class WalletController {
     }
 
     @GetMapping("/{wallet-name}")
-    public WalletPublicInfo getWalletByNameAndOwner(@PathVariable("wallet-name") String walletName) throws Exception {
+    public WalletDTO getWalletByNameAndOwner(@PathVariable("wallet-name") String walletName) throws Exception {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return walletService.getWalletByNameAndOwner(walletName, user);
     }

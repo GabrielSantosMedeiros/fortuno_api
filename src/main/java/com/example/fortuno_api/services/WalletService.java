@@ -6,8 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.fortuno_api.dtos.wallet.WalletCreatedInfoDTO;
-import com.example.fortuno_api.dtos.wallet.WalletPublicInfo;
+import com.example.fortuno_api.dtos.wallet.WalletDTO;
 import com.example.fortuno_api.models.User;
 import com.example.fortuno_api.models.Wallet;
 import com.example.fortuno_api.repositories.WalletRepository;
@@ -18,36 +17,40 @@ public class WalletService {
     @Autowired
     WalletRepository walletRepository;
 
-    public WalletPublicInfo getWalletByNameAndOwner(String walletName, User user) throws Exception {
+    public WalletDTO getWalletByNameAndOwner(String walletName, User user) throws Exception {
         Wallet wallet = walletRepository.findByNameAndOwner(walletName, user);
         if(wallet==null) throw new Exception("Wallet not found.");
-        return new WalletPublicInfo(
+        return new WalletDTO(
             wallet.getBalance(),
             wallet.getName(),
+            wallet.getDescription(),
             wallet.getOwner().getUsername(),
-            wallet.getCreatedAt()
+            wallet.getCreatedAt(),
+            wallet.getLastModifiedAt()
         );
     }
 
-    public List<WalletPublicInfo> getWalletsByOwner(User user) {
+    public List<WalletDTO> getWalletsByOwner(User user) {
         List<Wallet> wallets = walletRepository.findByOwner(user);
-        List<WalletPublicInfo> walletsDTO = new ArrayList<>();
+        List<WalletDTO> walletsDTO = new ArrayList<>();
 
         for(Wallet wallet : wallets) {
-            walletsDTO.add(new WalletPublicInfo(
+            walletsDTO.add(new WalletDTO(
                 wallet.getBalance(), 
-                wallet.getName(), 
+                wallet.getName(),
+                wallet.getDescription(),
                 wallet.getOwner().getUsername(), 
-                wallet.getCreatedAt()
+                wallet.getCreatedAt(),
+                wallet.getLastModifiedAt()
             ));
         }
         return walletsDTO;
     }
 
-    public WalletCreatedInfoDTO create(Wallet wallet) {
+    public WalletDTO create(Wallet wallet) {
         walletRepository.save(wallet);
         
-        return new WalletCreatedInfoDTO(
+        return new WalletDTO(
             wallet.getBalance(), 
             wallet.getName(), 
             wallet.getDescription(), 
@@ -57,7 +60,7 @@ public class WalletService {
         );
     }
 
-    public WalletCreatedInfoDTO modify(String walletName, User owner, Wallet newWalletInfo) throws Exception {
+    public WalletDTO modify(String walletName, User owner, Wallet newWalletInfo) throws Exception {
         Wallet wallet = walletRepository.findByNameAndOwner(walletName, owner);
         if(wallet==null) throw new Exception("wallet not found.");
         
@@ -66,7 +69,7 @@ public class WalletService {
         if(!newWalletInfo.getDescription().isEmpty()) wallet.setDescription(newWalletInfo.getDescription());
 
         walletRepository.save(wallet);
-        return new WalletCreatedInfoDTO(
+        return new WalletDTO(
             wallet.getBalance(), 
             wallet.getName(), 
             wallet.getDescription(), 

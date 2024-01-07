@@ -7,10 +7,12 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class WalletPublicInfo {
+public class WalletDTO {
     
     private double balance;
     private String name;
+    private String description;
     private String owner;
     private LocalDateTime createdAt;
+    private LocalDateTime lastModifiedAt;
 }

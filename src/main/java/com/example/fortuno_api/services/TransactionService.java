@@ -24,6 +24,7 @@ public class TransactionService {
             transactionsDTO.add(new TransactionDTO(
                 transaction.getAmount(),
                 transaction.getOwner().getUsername(),
+                transaction.getWallet().getName(),
                 transaction.getType().toString(),
                 transaction.getCreatedAt(),
                 transaction.getLastModifiedAt()
@@ -36,7 +37,8 @@ public class TransactionService {
         transactionRepository.save(transaction);
         return new TransactionDTO(
             transaction.getAmount(), 
-            transaction.getOwner().getUsername(), 
+            transaction.getOwner().getUsername(),
+            transaction.getWallet().getName(), 
             transaction.getType().toString(), 
             transaction.getCreatedAt(), 
             transaction.getLastModifiedAt()

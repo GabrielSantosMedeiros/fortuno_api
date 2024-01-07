@@ -38,6 +38,10 @@ public class Transaction {
     @JoinColumn(name = "owner", referencedColumnName = "id")
     private User owner;
 
+    @ManyToOne
+    @JoinColumn(name = "wallet", referencedColumnName = "id")
+    private Wallet wallet;
+
     @Enumerated(EnumType.STRING)
     private TransactionType type;
 
